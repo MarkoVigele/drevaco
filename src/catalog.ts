@@ -173,7 +173,5 @@ export function productsInCategory(category: CategoryId | "alle"): readonly Prod
 }
 
 export function assetUrl(file: string): string {
-  const env = import.meta as ImportMeta & { env?: { BASE_URL?: string } };
-  const base = env.env?.BASE_URL ?? "/";
-  return `${base}products/${file}`;
+  return `${import.meta.env.BASE_URL}products/${file}`;
 }
