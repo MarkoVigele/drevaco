@@ -141,7 +141,7 @@ export const PRODUCTS: readonly Product[] = [
     category: "anhaenger",
     name: "Schlüsselanhänger Holzherz",
     priceCents: 500,
-    image: "anhaenger.jpg",
+    image: "anhaenger-herz.jpg",
     blurb:
       "Kleines Herz aus Holz, Ring fertig. Fünf Stück werden über 4+1 zu 20 € — Namensgravur gratis.",
     engravingHint: "Name oder kurzes Wort",
@@ -153,7 +153,7 @@ export const PRODUCTS: readonly Product[] = [
     category: "anhaenger",
     name: "Schlüsselanhänger Lederband",
     priceCents: 500,
-    image: "anhaenger.jpg",
+    image: "anhaenger-leder.jpg",
     blurb:
       "Lederquaste in der Farbe vom Stand, oft mit kleinem Holzplättchen. Gleicher Preis, gleiche 5er-Aktion.",
     engravingHint: "Name auf dem Plättchen — oder leer lassen",

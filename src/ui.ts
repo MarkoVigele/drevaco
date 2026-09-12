@@ -48,6 +48,7 @@ const state: State = {
 
 let toastTimer = 0;
 let root: Element | null = null;
+let pendingScroll: string | null = null;
 
 function persist(): void {
   saveCart(state.cart);
@@ -114,66 +115,101 @@ function escapeHtml(value: string): string {
 function header(): string {
   const count = cartItemCount(state.cart);
   return `
-    <a class="skip" href="#inhalt">Zum Inhalt</a>
+    <a class="skip" href="#auswahl">Zum Inhalt</a>
     <header class="top">
       <a class="brand" href="#/" data-go="/">
         <img src="${assetUrl("logo-mark.png")}" alt="" width="40" height="40" />
-        <span>
-          <span class="brand-name">drevaco.sk</span>
-          <span class="brand-sub">Holz &amp; Leder, graviert</span>
-        </span>
+        <span class="brand-name">DREVACO</span>
       </a>
-      <button class="icon-btn" type="button" data-go="korb" ${count ? `data-count="${count}"` : ""} aria-label="Warenkorb${count ? `, ${count} Stück` : ""}">Korb</button>
+      <nav class="nav" aria-label="Shop">
+        <button class="nav-link" type="button" data-scroll="auswahl">Auswahl</button>
+        <button class="nav-link" type="button" data-scroll="aktionen">Aktionen</button>
+        <button class="icon-btn" type="button" data-go="korb" ${count ? `data-count="${count}"` : ""} aria-label="Warenkorb${count ? `, ${count} Stück` : ""}">Korb</button>
+      </nav>
     </header>
+  `;
+}
+
+function footer(): string {
+  return `
+    <footer class="foot">
+      <div class="wrap">
+        <div class="brand-name">DREVACO</div>
+        <p>drevaco.sk · Holz &amp; Gravur · Arbeit aus Österreich</p>
+        <p>Demo-Shop: der Korb bleibt im Browser. Keine Zahlung, kein Stripe, keine automatische Bestellmail.</p>
+        <p>INGENIUMOWL</p>
+      </div>
+    </footer>
   `;
 }
 
 function shopView(): string {
   const list = productsInCategory(state.filter);
   return `
-    <main id="inhalt" class="wrap">
-      <div class="promo" aria-label="Aktionen">
-        <span class="chip"><strong>Kostenlose Namensgravur</strong> auf alles</span>
-        <span class="chip"><strong>4+1 gratis</strong> — auch im Mix</span>
-        <span class="chip">Anhänger: 5 Stück 20&nbsp;€</span>
-      </div>
+    <main id="inhalt">
       <section class="hero">
-        <div class="hero-copy">
-          <h1>Vom Marktstand auf den Tisch.</h1>
-          <p>Wir gravieren Holz und Leder mit eurem Namen oder Spruch — so wie am Stand. Bestellung hier nur vormerken, ohne Zahlung. Abholung oder Übergabe klären wir danach.</p>
-        </div>
         <div class="hero-visual">
           <img src="${assetUrl("hero-stand.jpg")}" alt="Marktstand mit gravierten Holzbrettern, Bierkrügen und Schlüsselanhängern" />
         </div>
+        <div class="hero-copy">
+          <p class="eyebrow">drevaco.sk</p>
+          <h1>Holz&shy;gravur</h1>
+          <p>Personalisierte Stücke aus Holz und Leder — Name oder Spruch, so wie am Stand. Hier nur vormerken, ohne Zahlung.</p>
+          <div class="hero-actions">
+            <button class="btn" type="button" data-scroll="auswahl">Zur Auswahl</button>
+            <button class="btn ghost" type="button" data-scroll="aktionen">4+1 gratis</button>
+          </div>
+        </div>
       </section>
-      <div class="filters" role="tablist" aria-label="Kategorien">
-        ${CATEGORIES.map(
-          (cat) => `
-          <button class="filter" type="button" role="tab" data-filter="${cat.id}" aria-pressed="${state.filter === cat.id}">${escapeHtml(cat.label)}</button>
-        `,
-        ).join("")}
-      </div>
-      <section class="grid" aria-live="polite">
-        ${list
-          .map(
-            (product) => `
-          <button class="card" type="button" data-go="p/${product.id}">
-            <img src="${assetUrl(product.image)}" alt="" />
-            <div class="card-body">
-              ${product.badge ? `<span class="badge">${escapeHtml(product.badge)}</span>` : ""}
-              <h2>${escapeHtml(product.name)}</h2>
-              <div class="price">${formatEuro(product.priceCents)}</div>
-            </div>
-          </button>
-        `,
-          )
-          .join("")}
+      <section class="section tint" id="aktionen" aria-label="Aktionen">
+        <div class="wrap">
+          <h2 class="section-title">Aktionen</h2>
+          <div class="promo-grid">
+            <article class="promo-card">
+              <h3>Namensgravur</h3>
+              <p>Kostenlose Namensgravur auf alle Artikel — Spruch oder Name, so wie am Stand.</p>
+            </article>
+            <article class="promo-card">
+              <h3>4+1 gratis</h3>
+              <p>Auch im Mix: ab fünf Stück ist jeder fünfte frei. Wir nehmen immer den günstigsten.</p>
+            </article>
+            <article class="promo-card">
+              <h3>Anhänger</h3>
+              <p>Schlüsselanhänger 5&nbsp;€, fünf Stück damit 20&nbsp;€ — dieselbe Rechenregel.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="auswahl">
+        <div class="wrap">
+          <h2 class="section-title">Unsere Artikel</h2>
+          <div class="filters" role="tablist" aria-label="Kategorien">
+            ${CATEGORIES.map(
+              (cat) => `
+              <button class="filter" type="button" role="tab" data-filter="${cat.id}" aria-pressed="${state.filter === cat.id}">${escapeHtml(cat.label)}</button>
+            `,
+            ).join("")}
+          </div>
+          <div class="grid" aria-live="polite">
+            ${list
+              .map(
+                (product) => `
+              <button class="card" type="button" data-go="p/${product.id}">
+                <img src="${assetUrl(product.image)}" alt="" />
+                <div class="card-body">
+                  ${product.badge ? `<span class="badge">${escapeHtml(product.badge)}</span>` : ""}
+                  <h2>${escapeHtml(product.name)}</h2>
+                  <div class="price">${formatEuro(product.priceCents)}</div>
+                </div>
+              </button>
+            `,
+              )
+              .join("")}
+          </div>
+        </div>
       </section>
     </main>
-    <footer class="foot wrap">
-      <p>drevaco.sk · Arbeit aus Österreich · INGENIUMOWL</p>
-      <p>Demo-Shop: der Korb bleibt im Browser. Keine Zahlung, kein Stripe, keine automatische Bestellmail.</p>
-    </footer>
+    ${footer()}
   `;
 }
 
@@ -186,6 +222,7 @@ function checkoutView(): string {
         <p class="empty">Der Korb ist leer. Erst etwas legen, dann vormerken.</p>
         <button class="btn" type="button" data-go="/">Zur Auswahl</button>
       </main>
+      ${footer()}
     `;
   }
   return `
@@ -202,6 +239,7 @@ function checkoutView(): string {
         <button class="btn ghost wide" type="button" data-go="korb">Zurück zum Korb</button>
       </form>
     </main>
+    ${footer()}
   `;
 }
 
@@ -214,6 +252,7 @@ function doneView(): string {
         <p class="muted">Es liegt keine Bestellung in dieser Sitzung.</p>
         <button class="btn" type="button" data-go="/">Zur Auswahl</button>
       </main>
+      ${footer()}
     `;
   }
   return `
@@ -238,6 +277,7 @@ function doneView(): string {
       </div>
       <p><button class="btn" type="button" data-new>Neue Auswahl</button></p>
     </main>
+    ${footer()}
   `;
 }
 
@@ -346,11 +386,27 @@ export function render(): void {
         ? cartDrawer()
         : "";
   root.innerHTML = `${header()}${main}${overlay}${state.toast ? `<div class="toast" role="status">${escapeHtml(state.toast)}</div>` : ""}`;
+  if (pendingScroll) {
+    const target = document.getElementById(pendingScroll);
+    pendingScroll = null;
+    target?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 function onClick(event: Event): void {
-  const target = (event.target as HTMLElement).closest<HTMLElement>("[data-go], [data-filter], [data-preset], [data-step], [data-qty-line], [data-remove], [data-new]");
+  const target = (event.target as HTMLElement).closest<HTMLElement>("[data-go], [data-filter], [data-preset], [data-step], [data-qty-line], [data-remove], [data-new], [data-scroll]");
   if (!target) return;
+
+  if (target.dataset.scroll) {
+    const id = target.dataset.scroll;
+    if (state.view !== "shop" || state.drawer) {
+      pendingScroll = id;
+      go("/");
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
 
   if (target.dataset.new !== undefined) {
     state.cart = [];
@@ -464,8 +520,9 @@ export function mount(el: Element): void {
   el.addEventListener("submit", onSubmit);
   window.addEventListener("hashchange", () => {
     openHash();
+    const scrollId = pendingScroll;
     render();
-    window.scrollTo(0, 0);
+    if (!scrollId) window.scrollTo(0, 0);
   });
   openHash();
   render();

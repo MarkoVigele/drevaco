@@ -21,6 +21,11 @@ describe("Katalog", () => {
     assert.equal(productsInCategory("bierkrug").length, 1);
   });
 
+  it("hat eigene Produktbilder für Herz und Leder", () => {
+    assert.equal(productById("anhaenger-herz")?.image, "anhaenger-herz.jpg");
+    assert.equal(productById("anhaenger-leder")?.image, "anhaenger-leder.jpg");
+  });
+
   it("baut Produktbild-URLs mit BASE_URL", async () => {
     const source = await readFile(new URL("./catalog.ts", import.meta.url), "utf8");
     assert.match(source, /\$\{import\.meta\.env\.BASE_URL\}products\/\$\{file\}/);
