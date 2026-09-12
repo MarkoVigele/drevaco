@@ -1,6 +1,6 @@
-# drevaco.sk
+# DREVACO
 
-Personalisierte Holz- und Ledergravur — so wie am Marktstand. Schlüsselbretter, Kochlöffel, kleine Bretter, Holz-Bierkrüge und Anhänger. Namensgravur ist im Preis. Der Name der Marke steht auf dem Holzdisk: **drevaco.sk**.
+Personalisierte Holz- und Ledergravur — so wie am Marktstand. Deutscher Demo-Shop im Look von [drevaco.sk](https://drevaco.sk/home.html): dunkler Header, Goldakzente, weiße Flächen. Schlüsselbretter, Kochlöffel, kleine Bretter, Holz-Bierkrüge und Anhänger. Namensgravur ist im Preis. Der Name der Marke steht auf dem Holzdisk: **drevaco.sk**.
 
 **Live:** [https://markovigele.github.io/drevaco/](https://markovigele.github.io/drevaco/)
 
@@ -23,7 +23,7 @@ Deutscher Demo-Shop. Korb und Gravurtext funktionieren. Es gibt keine Zahlung un
 | Bierkrug-Brett (Silhouette) | 10 € |
 | Schlüsselanhänger Holzherz / Lederband | 5 €, 5 Stück 20 € |
 
-Produktbilder sind Karten vom Marktstand (Bretter, Löffel, Krüge, Anhänger). Das Logo ist der gravierte Holzdisk.
+Produktkarten zeigen zugeschnittene Einzelstücke (ein Brett, ein Löffel, ein Krug, …). Hero und Übersicht bleiben Gruppenfotos. Das Logo ist der gravierte Holzdisk.
 
 ## Lokal
 
