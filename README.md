@@ -4,7 +4,9 @@ Personalisierte Holz- und Ledergravur — so wie am Marktstand. Deutscher Demo-S
 
 **Live:** [https://markovigele.github.io/drevaco/](https://markovigele.github.io/drevaco/)
 
-Deutscher Demo-Shop. Korb und Gravurtext funktionieren. Es gibt keine Zahlung und kein Stripe — am Ende steht nur **Bestellung vorgemerkt**, lokal im Browser.
+Demo-Shop auf **Slowakisch, Englisch und Deutsch** (SK / EN / DE). Die Sprache bleibt im Browser (`localStorage`). Ohne gespeicherte Wahl gilt die Browsersprache: `sk*` → Slowakisch, `en*` → Englisch, sonst Deutsch — der bisherige Shop-Ton.
+
+Korb und Gravurtext funktionieren. Es gibt keine Zahlung und kein Stripe — am Ende steht nur **Bestellung vorgemerkt**, lokal im Browser.
 
 ## Aktionen
 
